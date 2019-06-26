@@ -1,0 +1,218 @@
+html {
+}
+
+body {
+    font-family: Roboto, sans-serif;
+    color: #0f3c4b;
+    background-color: #e5edf1;
+    padding: 5rem 1.25rem; /* 80 20 */
+}
+
+.container {
+    width: 100%;
+    max-width: 680px; /* 800 */
+    text-align: center;
+    margin: 0 auto;
+}
+
+.container h1 {
+    font-size: 42px;
+    font-weight: 300;
+    color: #0f3c4b;
+    margin-bottom: 40px;
+}
+
+.container h1 a:hover,
+.container h1 a::selection {
+    color: #0b6743;
+}
+.container h1 a:focus {
+    color: #39bfd3;
+}
+
+.container nav {
+    margin-bottom: 40px;
+}
+
+.container nav a {
+    border-bottom: 2px solid #c8dadf;
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 0 5px;
+}
+
+.container nav a.is-selected {
+    font-weight: 700;
+    color: #0b7c55;
+    border-bottom-color: currentColor;
+}
+
+.container nav a:not( .is-selected ):hover,
+.container nav a:not( .is-selected ):focus {
+    border-bottom-color: #0b6743;
+}
+
+.dnd_box {
+    font-size: 1.25rem; /* 20 */
+    background-color: #abdfbc;
+    position: relative;
+    padding: 100px 20px;
+}
+
+.dnd_box.has-advanced-upload {
+    outline: 2px dashed #89b996;
+    outline-offset: -10px;
+
+    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+}
+
+.dnd_box.is-dragover {
+    outline-offset: -20px;
+    outline-color: #b8dfbb;
+    background-color: #c7fff5;
+}
+
+.drag_and_drop,
+.dnd_icon {
+    display: none;
+}
+
+.dnd_box.has-advanced-upload .drag_and_drop {
+    display: inline;
+}
+
+.dnd_box.has-advanced-upload .dnd_icon {
+    width: 100%;
+    height: 80px;
+    fill: #92b0b3;
+    display: block;
+    margin-bottom: 40px;
+}
+
+.dnd_box.is-uploading .dnd_input,
+.dnd_box.is-success .dnd_input,
+.dnd_box.is-error .dnd_input {
+    visibility: hidden;
+}
+
+.dnd_uploading,
+.dnd_success,
+.dnd_error {
+    display: none;
+}
+
+.dnd_box.is-uploading .dnd_uploading,
+.dnd_box.is-success .dnd_success,
+.dnd_box.is-error .dnd_error {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.dnd_uploading {
+    font-style: italic;
+}
+
+.dnd_success {
+    -webkit-animation: appear-from-inside .25s ease-in-out;
+    animation: appear-from-inside .25s ease-in-out;
+}
+
+@-webkit-keyframes appear-from-inside {
+    from {
+        -webkit-transform: translateY(-50%) scale(0);
+    }
+    75% {
+        -webkit-transform: translateY(-50%) scale(1.1);
+    }
+    to {
+        -webkit-transform: translateY(-50%) scale(1);
+    }
+}
+
+@keyframes appear-from-inside {
+    from {
+        transform: translateY(-50%) scale(0);
+    }
+    75% {
+        transform: translateY(-50%) scale(1.1);
+    }
+    to {
+        transform: translateY(-50%) scale(1);
+    }
+}
+
+.dnd_restart,
+.dnd_main {
+    font-weight: 700;
+}
+
+.dnd_restart:focus,
+.dnd_main:focus,
+.dnd_main:hover,
+.dnd_restart:hover {
+    color: #4392d3;
+}
+
+.js .dnd_file {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.js .dnd_file + label {
+    max-width: 80%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.js .dnd_file + label:hover strong,
+.dnd_file:focus + label strong,
+.dnd_file.has-focus + label strong {
+    color: #39bfd3;
+}
+
+.js .dnd_file:focus + label,
+.js .dnd_file.has-focus + label {
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
+.js .dnd_file + label * {
+    /* pointer-events: none; */ /* in case of FastClick lib use */
+}
+
+.no-js .dnd_file + label {
+    display: none;
+}
+
+.no-js .dnd_button {
+    display: block;
+}
+
+.dnd_button {
+    font-weight: 700;
+    color: #e5edf1;
+    background-color: #0fc992;
+    display: block;
+    padding: 8px 16px;
+    margin: 40px auto 0;
+    visibility: hidden;
+}
+
+.dnd_button:hover,
+.dnd_button:focus {
+    background-color: #0b7c55;
+}
