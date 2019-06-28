@@ -7,6 +7,7 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "org.hibernate:hibernate-gradle-plugin:5.0.7.Final"
     }
 }
 
@@ -15,10 +16,34 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.hibernate.orm'
+
+hibernate {
+    enhance {
+        enableLazyInitialization=true
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.4'
+}
 
 bootJar {
     baseName = 'xml_test_app'
-    version =  '0.0.1-SNAPSHOT'
+    version = '1.0.0-SNAPSHOT'
+}
+
+bootRun {
+    updateApplicationProperties()
+    systemProperties System.properties
+}
+
+def updateApplicationProperties() {
+    def configFile = new File('src/main/resources/application.properties')
+    println "Updating info build version to ${bootJar.baseName}-${bootJar.version}"
+    String configContent = configFile.getText('UTF-8')
+    configContent = configContent.replaceAll(/info\.build\.version=.*/, "info.build.version=${bootJar.baseName}-${bootJar.version}")
+    configFile.write(configContent, 'UTF-8')
 }
 
 repositories {
@@ -29,6 +54,12 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
-    testCompile("junit:junit")
+    compile("org.springframework.shell:spring-shell-starter:2.0.1.RELEASE")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}") {
+        exclude module: 'org.apache.tomcat:tomcat-jdbc'
+    }
+    compile("mysql:mysql-connector-java:5.1.46")
+    compile("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.9")
+    compile("com.zaxxer:HikariCP:3.2.0")
+    compile ("org.mockito:mockito-core:2.28.2")
 }
