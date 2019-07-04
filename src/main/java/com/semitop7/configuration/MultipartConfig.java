@@ -12,7 +12,6 @@ import org.springframework.util.unit.DataSize;
 import javax.servlet.MultipartConfigElement;
 
 @Configuration
-@PropertySource("classpath:application.properties")
 @ComponentScan
 @EnableAutoConfiguration
 public class MultipartConfig {

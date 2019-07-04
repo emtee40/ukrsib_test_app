@@ -9,4 +9,6 @@ import java.util.List;
 public interface TransactionService {
     @Transactional
     List<Transaction> saveAll(TransactionsDto transactions);
+
+    List<Transaction> saveAll(List<Transaction> transactions);
 }

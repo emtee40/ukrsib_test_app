@@ -6,8 +6,9 @@ import com.semitop7.dto.model.TransactionsDto;
 import com.semitop7.service.db.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -16,8 +17,18 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionRepository transactionRepository;
 
     @Override
-    @Transactional
     public List<Transaction> saveAll(TransactionsDto transactions) {
-        return transactionRepository.saveAll(transactions.getTransactions());
+        if (transactions != null && !CollectionUtils.isEmpty(transactions.getTransactions())) {
+            return transactionRepository.saveAll(transactions.getTransactions());
+        }
+        return new LinkedList<>();
+    }
+
+    @Override
+    public List<Transaction> saveAll(List<Transaction> transactions) {
+        if (!CollectionUtils.isEmpty(transactions)) {
+            return transactionRepository.saveAll(transactions);
+        }
+        return new LinkedList<>();
     }
 }

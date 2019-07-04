@@ -22,7 +22,6 @@ import static javax.persistence.CascadeType.*;
 public class Client {
     @Id
     @Column(name = "inn", unique = true, nullable = false)
-//    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long inn;
 
     @Column(name = "first_name")

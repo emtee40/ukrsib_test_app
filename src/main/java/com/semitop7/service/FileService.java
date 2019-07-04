@@ -15,12 +15,11 @@ import java.util.concurrent.Future;
 
 public interface FileService {
     @Async("threadPoolTaskExecutor")
-    Future<TransactionsDto> parseMultipartFileAsync(MultipartFile file) throws IOException, XMLStreamException;
+    Future<TransactionsDto> parseMultipartFileAsync(MultipartFile file) throws XMLStreamException, IOException;
 
-    @Async
     TransactionsDto parseMultipartFile(MultipartFile file) throws XMLStreamException, IOException;
 
-    Set<Client> parseTransactionsFuture(List<Transaction> transactions);
+    Set<Client> parseTransactions(List<Transaction> transactions);
 
-    Set<Client> parseTransactionsFuture(Collection<Future<TransactionsDto>> transactions);
+    Set<Client> parseTransactions(Collection<Future<TransactionsDto>> transactions);
 }

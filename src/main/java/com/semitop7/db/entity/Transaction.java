@@ -12,7 +12,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-import static javax.persistence.CascadeType.*;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity

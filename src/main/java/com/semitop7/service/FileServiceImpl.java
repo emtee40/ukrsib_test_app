@@ -10,13 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
@@ -34,7 +37,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Async("threadPoolTaskExecutor")
-    public Future<TransactionsDto> parseMultipartFileAsync(MultipartFile file) throws IOException, XMLStreamException {
+    public Future<TransactionsDto> parseMultipartFileAsync(MultipartFile file) throws XMLStreamException, IOException {
         TransactionsDto dto = parseMultipartFile(file);
         return new AsyncResult<>(dto);
     }
@@ -61,36 +64,42 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public Set<Client> parseTransactionsFuture(List<Transaction> transactions) {
-        return transactions
-                .parallelStream()
-                .map(t -> {
-                    Client c = t.getClient();
-                    if (c != null) {
-                        c.addTransaction(t);
-                    }
-                    return c;
-                }).collect(Collectors.toSet());
+    public Set<Client> parseTransactions(List<Transaction> transactions) {
+        if (!CollectionUtils.isEmpty(transactions)) {
+            return transactions
+                    .parallelStream()
+                    .map(t -> {
+                        Client c = t.getClient();
+                        if (c != null) {
+                            c.addTransaction(t);
+                        }
+                        return c;
+                    }).collect(Collectors.toSet());
+        }
+        return new LinkedHashSet<>();
     }
 
     @Override
-    public Set<Client> parseTransactionsFuture(Collection<Future<TransactionsDto>> transactions) {
-        return transactions.parallelStream().flatMap(ts -> {
-            try {
-                TransactionsDto dto = ts.get();
-                if (dto != null) {
-                    return dto.getTransactions().parallelStream();
+    public Set<Client> parseTransactions(Collection<Future<TransactionsDto>> transactions) {
+        if (!CollectionUtils.isEmpty(transactions)) {
+            return transactions.parallelStream().flatMap(ts -> {
+                try {
+                    TransactionsDto dto = ts.get();
+                    if (dto != null && !CollectionUtils.isEmpty(dto.getTransactions())) {
+                        return dto.getTransactions().parallelStream();
+                    }
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
                 }
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-            return Stream.empty();
-        }).map(t -> {
-            Client c = t.getClient();
-            if (c != null) {
-                c.addTransaction(t);
-            }
-            return c;
-        }).collect(Collectors.toSet());
+                return Stream.empty();
+            }).map(t -> {
+                Client c = t.getClient();
+                if (c != null) {
+                    c.addTransaction(t);
+                }
+                return c;
+            }).collect(Collectors.toSet());
+        }
+        return new LinkedHashSet<>();
     }
 }
