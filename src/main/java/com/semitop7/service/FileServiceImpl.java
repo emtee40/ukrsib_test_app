@@ -47,18 +47,19 @@ public class FileServiceImpl implements FileService {
         LOGGER.info(String.format("[FILE] name: %s, size (bytes): %d",
                 file.getOriginalFilename(),
                 file.getSize()));
-        InputStream fileStream = file.getInputStream();
-        XMLStreamReader sr = XMLInputFactory.newFactory().createXMLStreamReader(fileStream);
-        try {
-            while (sr.hasNext()) {
-                if (sr.isStartElement() && TRANSACTIONS_KEY.equals(sr.getLocalName())) {
-                    return xmlMapper.readValue(sr, TransactionsDto.class);
+        try(InputStream fileStream = file.getInputStream()) {
+            XMLStreamReader sr = XMLInputFactory.newFactory().createXMLStreamReader(fileStream);
+            try {
+                while (sr.hasNext()) {
+                    if (sr.isStartElement() && TRANSACTIONS_KEY.equals(sr.getLocalName())) {
+                        return xmlMapper.readValue(sr, TransactionsDto.class);
+                    }
+                    sr.next();
                 }
-                sr.next();
-            }
 
-        } finally {
-            sr.close();
+            } finally {
+                sr.close();
+            }
         }
         return null;
     }
