@@ -1,0 +1,20 @@
+You can use Docker for create local DB for test app
+Linux command: 'sudo docker-compose up -d'
+Windows command: open power-shell, execute 'docker-compose up -d'
+
+WARNING!!!
+Supported only linux containers.
+
+required oracle 1.8 JDK or 1.8 OpneJDK
+
+Linux:
+    Run test: 'dradlew test'
+    Build project: 'dradlew build'
+    Run app: 'java -jar build/libs/xml_test_app-<version_of_app>.jar'
+
+Windows:
+    Run test: 'dradlew.bat test'
+    Build project: 'dradlew.bat build'
+    Run app: 'java -jar build/libs/xml_test_app-<version_of_app>.jar'
+
+Use 'http://localhost:8080' in you web browser for access to web-app
