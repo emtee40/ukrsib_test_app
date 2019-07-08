@@ -1,4 +1,4 @@
-You can use Docker for create local DB for test app
+You can use Docker for create local DB and web spring application inside docker containers:
 Linux command: 'sudo docker-compose up -d'
 Windows command: open power-shell, execute 'docker-compose up -d'
 
@@ -8,8 +8,8 @@ Supported only linux containers.
 required oracle 1.8 JDK or 1.8 OpneJDK
 
 Linux:
-    Run test: 'gradlew test'
-    Build project: 'gradlew build'
+    Run test: './gradlew test'
+    Build project: './gradlew build'
     Run app: 'java -jar build/libs/xml_test_app-<version_of_app>.jar'
 
 Windows:
@@ -18,3 +18,4 @@ Windows:
     Run app: 'java -jar build/libs/xml_test_app-<version_of_app>.jar'
 
 Use 'http://localhost:8080' in you web browser for access to web-app
+For connection to local DB what working inside docker container use host:localhost and port:3307

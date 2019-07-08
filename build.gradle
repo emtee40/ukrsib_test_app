@@ -38,6 +38,10 @@ bootRun {
     systemProperties System.properties
 }
 
+test {
+    systemProperties System.properties
+}
+
 def updateApplicationProperties() {
     def configFile = new File('src/main/resources/application.properties')
     println "Updating info build version to ${bootJar.baseName}-${bootJar.version}"

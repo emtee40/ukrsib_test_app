@@ -1,6 +1,6 @@
 version: '3'
 services:
-  mysql_demo:
+  mysql:
     image: mysql:5.7.23
     container_name: mysql_demo
     volumes:
@@ -12,3 +12,25 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: ukrsib_test
+    networks:
+      - backend
+
+  app:
+    image: tomcat:8.5-jre8-alpine
+    container_name: app_demo
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysql
+    volumes:
+      - .:/ukrsib_test_app
+    working_dir: /ukrsib_test_app
+    command: >
+      bash -c "chmod +x deploy_app_demo.sh
+      && ./deploy_app_demo.sh"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
