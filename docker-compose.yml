@@ -16,7 +16,7 @@ services:
       - backend
 
   app:
-    image: tomcat:8.5-jre8-alpine
+    image: openjdk:8-jre-alpine
     container_name: app_demo
     ports:
       - 8080:8080
@@ -26,7 +26,7 @@ services:
       - .:/ukrsib_test_app
     working_dir: /ukrsib_test_app
     command: >
-      bash -c "chmod +x deploy_app_demo.sh
+      sh -c "chmod +x deploy_app_demo.sh
       && ./deploy_app_demo.sh"
     networks:
       - backend
