@@ -16,7 +16,7 @@ services:
       - backend
 
   app:
-    image: openjdk:8-jre-alpine
+    image: gradle:4.4.1-jdk8-alpine
     container_name: app_demo
     ports:
       - 8080:8080
